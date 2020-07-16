@@ -1,4 +1,66 @@
 
+var fecha = new Date();
+
+var fecha_hora = fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear() + " " + fecha.getHours() + ":" + fecha.getMinutes()+ ":" + fecha.getSeconds() ;
+
+
+function generarTexto(data,cate) {
+  var texto = [];
+
+
+
+
+
+for ( let i= 0; i< data.results.length; i++){
+
+  texto.push("id: ");
+  texto.push(data.results[i].id);
+  texto.push("title ");
+  texto.push(data.results[i].title);
+  texto.push("category_id: ");
+  texto.push(data.results[i].category_id);
+  texto.push("categoria: ");
+  texto.push(cate);
+
+  texto.push("\r");
+
+}
+
+
+guardasion(texto)
+
+
+  return new Blob(texto, {
+    type: 'text/plain'
+
+  });
+  
+};
+
+
+
+function guardasion(texto){
+
+
+var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function () {
+        var blob = new File([texto], "log con fecha "+fecha_hora);
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = blob.name;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+saveData()
+}
+
+
+
+
 
 
      function capturar() {
@@ -35,6 +97,8 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
        .then (data => {
 
 
+
+
 		for ( let i= 0; i< data.results.length; i++){
 	     
 
@@ -42,7 +106,7 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
 		
 
 		var datos = data.results[i]
-
+    
 		
 
       //console.log (datos.category_id)
@@ -58,7 +122,12 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
 
        //console.log(cate)
         
+
+   generarTexto(data,cate);  
+      
 		tabla(data.results[i],cate)
+
+
 
      
 })
@@ -66,6 +135,7 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
 }
 
           })
+
 
 
 
@@ -93,13 +163,26 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
        .then (data => {
 
 
+        
+
+
+
 		for ( let i= 0; i< data.results.length; i++){
-	     
+
+
+
+
+
+
 
 	    
-		
+		    var datos = data.results[i]
 
-		var datos = data.results[i]
+
+
+        
+
+
 
 		
 
@@ -112,11 +195,25 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
 
 
 
+
+
 		var cate = cat.filters[0].values[0].name
 
+generarTexto(data,cate);
+
+
+
        //console.log(cate)
+
+
+
+
+
         
 		tabla(data.results[i],cate)
+
+
+
 
      
 })
@@ -150,15 +247,20 @@ fetch('https://api.mercadolibre.com/sites/MLA/search?seller_id='+id_vendedor)
                 </tr>
 
 `
-            
 
 
 
-                 
 
-                
-            }
+
+
+   }
+
+
+
+
+
+
+
+
         
-
-
 
